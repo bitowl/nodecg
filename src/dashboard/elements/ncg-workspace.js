@@ -327,6 +327,10 @@ class NcgWorkspace extends Polymer.PolymerElement {
 					return;
 				}
 
+				if (Object.prototype.hasOwnProperty.call(bundle.config, 'nodecg:workspace:' + panel.name)) {
+					panel.workspace = bundle.config['nodecg:workspace:' + panel.name];
+				}
+
 				if (panel.workspace === workspaceName) {
 					panels.push(panel);
 				}
