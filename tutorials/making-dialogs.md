@@ -8,10 +8,24 @@ A dialog is defined the same as any other dashboard panel would be in [package.j
 additional `dialog: true` property.
 
 ## Opening dialogs
-To open a dialog, add a `nodecg-dialog` attribute to any clickable element on one of your panels. For example, this
+To open a dialog you can access it with `getDialog` and then open it with `show`:
+```js
+nodecg.getDialog('edit-total').show()
+```
+
+You can also add a `nodecg-dialog` attribute to any clickable element on one of your panels. For example, this
 [`<paper-button>`](https://elements.polymer-project.org/elements/paper-button) element will open the `edit-total` dialog when clicked:
 ```html
 <paper-button id="edit" class="nodecg-configure" nodecg-dialog="edit-total">Edit...</paper-button>
+```
+But be aware that this will not work inside of a shadow DOM (e.g. a Polymer element).
+
+## Passing data to dialogs
+If you need to change data in your dialog, you can access the `document` of that dialog with `getDialogDocument`.
+
+```js
+const editor = nodecg.getDialogDocument('edit-run').getElementById('editor');
+editor.title = `Edit Current Run (#${currentRun.value.order})`;
 ```
 
 ## Closing dialogs
