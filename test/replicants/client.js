@@ -6,7 +6,7 @@ const path = require('path');
 const test = require('ava');
 
 // Ours
-require('../helpers/nodecg-and-webdriver')(test, ['dashboard']); // Must be first.
+require('../helpers/nodecg-and-webdriver')(test, {tabs: ['dashboard']}); // Must be first.
 const e = require('../helpers/test-environment');
 const C = require('../helpers/test-constants');
 
@@ -518,4 +518,17 @@ test.serial.cb('transient - should not write their value to disk', t => {
 			});
 		}).catch(t.fail);
 	});
+});
+
+test.serial('#waitForReplicants', async t => {
+	await e.browser.client.executeAsync(done => {
+		const rep1 = window.dashboardApi.Replicant('wfp1');
+		const rep2 = window.dashboardApi.Replicant('wfp2');
+		const rep3 = window.dashboardApi.Replicant('wfp3');
+		/* eslint-disable no-undef */
+		NodeCG.waitForReplicants(rep1, rep2, rep3).then(done);
+		/* eslint-enable no-undef */
+	});
+
+	t.pass();
 });

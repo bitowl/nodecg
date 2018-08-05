@@ -2,9 +2,12 @@
 
 // Packages
 const test = require('ava');
+const express = require('express');
+const axios = require('axios');
 
 // Ours
-require('../helpers/nodecg-and-webdriver')(test, ['dashboard']); // Must be first.
+require('../helpers/nodecg-and-webdriver')(test, {tabs: ['dashboard']}); // Must be first.
+const C = require('../helpers/test-constants');
 const e = require('../helpers/test-environment');
 
 test.serial('should receive messages and fire acknowledgements', async t => {
@@ -55,4 +58,144 @@ test.serial('should not return a promise if the user provided a callback ', asyn
 		});
 	});
 	t.true(res.value);
+});
+
+test('should mount custom routes via nodecg.mount', async t => {
+	const app = express();
+	app.get('/test-bundle/test-route', (req, res) => {
+		res.send('custom route confirmed');
+	});
+	e.apis.extension.mount(app);
+
+	const response = await axios.get(`${C.ROOT_URL}test-bundle/test-route`);
+	t.is(response.status, 200);
+	t.is(response.data, 'custom route confirmed');
+});
+
+test.serial.cb('should support multiple listenFor handlers', t => {
+	t.plan(2);
+	let callbacksInvoked = 0;
+
+	e.apis.extension.listenFor('multipleListenFor', () => {
+		t.pass();
+		checkDone();
+	});
+
+	e.apis.extension.listenFor('multipleListenFor', () => {
+		t.pass();
+		checkDone();
+	});
+
+	e.browser.client.execute(() => {
+		return window.dashboardApi.sendMessage('multipleListenFor');
+	});
+
+	function checkDone() {
+		callbacksInvoked++;
+		if (callbacksInvoked === 2) {
+			t.end();
+		}
+	}
+});
+
+test.serial.cb('should prevent acknowledgements from being called more than once', t => {
+	t.plan(4);
+	let callbacksInvoked = 0;
+
+	e.apis.extension.listenFor('singleAckEnforcement', (data, cb) => {
+		t.false(cb.handled);
+		t.notThrows(cb);
+		checkDone();
+	});
+
+	e.apis.extension.listenFor('singleAckEnforcement', (data, cb) => {
+		t.true(cb.handled);
+		t.throws(cb);
+		checkDone();
+	});
+
+	e.browser.client.executeAsync(done => {
+		return window.dashboardApi.sendMessage('singleAckEnforcement', null, done);
+	});
+
+	function checkDone() {
+		callbacksInvoked++;
+		if (callbacksInvoked === 2) {
+			t.end();
+		}
+	}
+});
+
+test.serial('server - should support intra-context messaging', async t => {
+	t.plan(2);
+
+	// This is what we're actually testing.
+	e.apis.extension.listenFor('serverToServer', data => {
+		t.deepEqual(data, {foo: 'bar'});
+	});
+
+	// But, we also make sure that the client (browser) is still getting these messages as normal.
+	await e.browser.client.execute(() => {
+		window.dashboardApi.listenFor('serverToServer', data => {
+			window._serverToServerData = data;
+		});
+	});
+
+	// Send the message only after both listeners have been set up.
+	e.apis.extension.sendMessage('serverToServer', {foo: 'bar'});
+
+	// Wait until the browser has received the message.
+	await e.browser.client.waitUntil(async () => {
+		const response = await e.browser.client.execute(() => {
+			return window._serverToServerData;
+		});
+
+		return response && response.value &&
+			typeof response.value === 'object' &&
+			Object.keys(response.value).length > 0;
+	});
+
+	// Verify that the browser got the right data along with the message.
+	const response = await e.browser.client.execute(() => {
+		return window._serverToServerData;
+	});
+	t.deepEqual(response.value, {foo: 'bar'});
+});
+
+test.serial('client - should support intra-context messaging', async t => {
+	t.plan(2);
+
+	// We also want to make sure that the server (extension) is still getting these messages as normal.
+	e.apis.extension.listenFor('clientToClient', data => {
+		t.deepEqual(data, {baz: 'qux'});
+	});
+
+	const response = await e.browser.client.executeAsync(done => {
+		window.dashboardApi.listenFor('clientToClient', data => {
+			done(data);
+		});
+
+		// Send the message only after both listeners have been set up.
+		window.dashboardApi.sendMessage('clientToClient', {baz: 'qux'});
+	});
+	t.deepEqual(response.value, {baz: 'qux'});
+});
+
+test('server - #bundleVersion', t => {
+	t.is(e.apis.extension.bundleVersion, '0.0.1');
+});
+
+test('server - #bundleGit', t => {
+	t.deepEqual(e.apis.extension.bundleGit, {
+		branch: 'master',
+		date: new Date('2018-07-13T17:09:29.000Z'),
+		hash: '6262681c7f35eccd7293d57a50bdd25e4cd90684',
+		message: 'Initial commit',
+		shortHash: '6262681'
+	});
+});
+
+test('bundles replicant', t => {
+	const bundlesRep = e.apis.extension.Replicant('bundles', 'nodecg');
+	t.is(bundlesRep.value.length, 5);
 });

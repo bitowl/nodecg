@@ -2,24 +2,14 @@
 <link rel="import" href="../../../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../../../bower_components/paper-slider/paper-slider.html">
 <link rel="import" href="../../../../bower_components/paper-styles/typography.html">
+<link rel="import" href="../ui/ui-select.html">
 
 <dom-module id="ncg-sound-cue">
 	<template>
-		<style>
+		<style include="nodecg-theme">
 			:host {
 				@apply --layout-horizontal;
 				align-items: center;
-			}
-
-			#delete {
-				min-width: 0;
-				padding: 0;
-				width: 20px;
-				margin-left: 0;
-				--paper-button: {
-					background-color: var(--nodecg-danger-color);
-					color: white;
-				}
 			}
 
 			#leftWrapper {
@@ -60,22 +50,11 @@
 			}
 		</style>
 
-		<paper-button
-			id="delete"
-			hidden="[[!custom]]"
-			on-tap="emitDelete"
-			raised>
-			X
-		</paper-button>
-
 		<div id="leftWrapper">
 			<span id="name">[[name]]</span>
-			<template is="dom-if" if="[[custom]]">
-				<span id="timestamp">Created on [[parseTimestamp(createdTimestamp)]]</span>
-			</template>
 		</div>
 
-		<select id="select" on-change="_retargetFile"></select>
+		<ui-select id="select" on-change="_retargetFile"></ui-select>
 		<paper-slider id="slider" min="0" max="100" step="1" on-change="_onSliderChange" editable></paper-slider>
 	</template>
 

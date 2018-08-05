@@ -1,6 +1,8 @@
 # Node / Bower
-bower_components
-node_modules
+/bower_components
+/node_modules
+/build/bower_components
+/build/node_modules
 npm-debug.log
 
 # Local bundles
@@ -24,6 +26,7 @@ npm-debug.log
 /.idea/copyright/profiles_settings.xml
 /.idea/workspace.xml
 /.idea/shelf/
+/.idea/codeStyles/codeStyleConfig.xml
 
 # Code coverage results
 /coverage

@@ -2,6 +2,133 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.1.3"></a>
+## [1.1.3](https://github.com/nodecg/nodecg/compare/v1.1.2...v1.1.3) (2018-08-05)
+
+
+### Bug Fixes
+
+* **dashboard:** also target root html for theme import ([0948f5f](https://github.com/nodecg/nodecg/commit/0948f5f))
+* **dashboard:** fix text and icon colors of Asset upload dialog ([d1d3a45](https://github.com/nodecg/nodecg/commit/d1d3a45))
+* **dashboard:** implement missing dark theme for bundle dialogs ([d14158f](https://github.com/nodecg/nodecg/commit/d14158f))
+* **package:** roll node-localstorage to v1.3.1 ([56d8bb7](https://github.com/nodecg/nodecg/commit/56d8bb7))
+
+
+
+<a name="1.1.2"></a>
+## [1.1.2](https://github.com/nodecg/nodecg/compare/v1.1.1...v1.1.2) (2018-07-19)
+
+
+### Bug Fixes
+
+* **dashboard:** fix graphic instances not appearing when using a bundle that is not a git repo ([54cfcd6](https://github.com/nodecg/nodecg/commit/54cfcd6))
+
+
+
+<a name="1.1.1"></a>
+## [1.1.1](https://github.com/nodecg/nodecg/compare/v1.1.0...v1.1.1) (2018-07-19)
+
+
+### Bug Fixes
+
+* **dashboard:** fix missing background color on graphics collapse toggle button ([9e6bc4d](https://github.com/nodecg/nodecg/commit/9e6bc4d))
+* **package:** include schemas folder in zeit pkg builds ([c38e463](https://github.com/nodecg/nodecg/commit/c38e463))
+
+
+
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/nodecg/nodecg/compare/v1.0.0...v1.1.0) (2018-07-19)
+
+
+### Features
+
+* **api:** add nodecg.bundleGit object ([#418](https://github.com/nodecg/nodecg/issues/418)) ([dfe0b95](https://github.com/nodecg/nodecg/commit/dfe0b95))
+* **api:** add nodecg.bundleVersion to api ([#459](https://github.com/nodecg/nodecg/issues/459)) ([170142b](https://github.com/nodecg/nodecg/commit/170142b))
+* **api:** introduce bundles replicant ([#421](https://github.com/nodecg/nodecg/issues/421)) ([94d0b1d](https://github.com/nodecg/nodecg/commit/94d0b1d))
+* **dashboard:** implement dark theme ([#425](https://github.com/nodecg/nodecg/issues/425)) ([0dafe4e](https://github.com/nodecg/nodecg/commit/0dafe4e))
+* **dashboard:** implement redesigned graphics tab with refresh buttons ([#420](https://github.com/nodecg/nodecg/issues/420)) ([215f489](https://github.com/nodecg/nodecg/commit/215f489))
+
+
+
+<a name="1.0.0"></a>
+# [1.0.0](https://github.com/nodecg/nodecg/compare/v0.9.12...v1.0.0) (2018-07-11)
+
+
+### Bug Fixes
+
+* remove undocumented and non-functional panelClick event ([1c20d58](https://github.com/nodecg/nodecg/commit/1c20d58))
+* remove undocumented dialog-confirm and dialog-dismiss attribute click handlers ([cab06b6](https://github.com/nodecg/nodecg/commit/cab06b6))
+* **assets:** fix "can't set headers..." error ([#411](https://github.com/nodecg/nodecg/issues/411)) ([518cf21](https://github.com/nodecg/nodecg/commit/518cf21))
+* **dashboard:** remove useless and busted-looking "info" dialog from panels ([22499bd](https://github.com/nodecg/nodecg/commit/22499bd))
+* **login:** use the New Twitch API ([#413](https://github.com/nodecg/nodecg/issues/413)) ([6696231](https://github.com/nodecg/nodecg/commit/6696231))
+* **mounts:** put mount routes behind an auth check ([c99fa85](https://github.com/nodecg/nodecg/commit/c99fa85))
+* **sounds:** remove undocumented customCues system ([efe877e](https://github.com/nodecg/nodecg/commit/efe877e))
+
+
+### Features
+
+* **api:** add support for intra-context messaging ([#410](https://github.com/nodecg/nodecg/issues/410)) ([3a3acf7](https://github.com/nodecg/nodecg/commit/3a3acf7))
+* **api:** support multiple listenFor handlers ([#403](https://github.com/nodecg/nodecg/issues/403)) ([f19c79b](https://github.com/nodecg/nodecg/commit/f19c79b)), closes [#298](https://github.com/nodecg/nodecg/issues/298)
+* **bundle-manager:** blacklisted bundle directory names ([#357](https://github.com/nodecg/nodecg/issues/357)) ([68e7add](https://github.com/nodecg/nodecg/commit/68e7add))
+
+
+### BREAKING CHANGES
+
+* **dashboard**: The undocumented `[dialog-confirm]` and `[dialog-dismiss]` attribute click handlers have been removed.
+* **dashboard**: The undocumented (and broken) `panelClick` event has been removed.
+* **api:** sendMessage can now trigger listenFor handlers in the same context (extension, webpage, etc).
+* **login:** The format of Twitch auth scopes has changed. Please see https://dev.twitch.tv/docs/authentication/#scopes for documentation on this new format.
+* **login:** Twitch auth now uses the "New Twitch API", instead of the deprecated "v5" API.
+* **api:** A given context (server, client) can now declare multiple listenFor handlers for a given message. Handlers are called in the order they were registered.
+
+However, a server-side listenFor handler must be careful to only call an acknowledgement once. Attempting to call an acknowledgement more than once will throw an error.
+
+Your server-side code can check if an acknowledgement has already been called/handled by checking its `.handled` property.
+
+Example:
+```js
+nodecg.listenFor('example', (data, ack) => {
+	if (ack && !ack.handled) {
+		ack();
+	}
+});
+```
+* **sounds:** The undocumented customCues system has been removed.
+
+
+
+<a name="0.9.12"></a>
+## [0.9.12](https://github.com/nodecg/nodecg/compare/v0.9.11...v0.9.12) (2018-07-05)
+
+
+### Bug Fixes
+
+* **bundles:** avoid throwing exception on Unicode BOM ([#401](https://github.com/nodecg/nodecg/issues/401)) ([84a4555](https://github.com/nodecg/nodecg/commit/84a4555))
+* **package:** use npm audit to fix a lot of vulnerability warnings ([1b9dc96](https://github.com/nodecg/nodecg/commit/1b9dc96))
+
+
+### Features
+
+* **api:** add NodeCG.waitForReplicants method ([b8d3ed1](https://github.com/nodecg/nodecg/commit/b8d3ed1))
+* **auth:** add basic local authentication ([#390](https://github.com/nodecg/nodecg/issues/390)) ([54bbcf6](https://github.com/nodecg/nodecg/commit/54bbcf6))
+
+
+
+<a name="0.9.11"></a>
+## [0.9.11](https://github.com/nodecg/nodecg/compare/v0.9.10...v0.9.11) (2018-05-03)
+
+
+### Bug Fixes
+
+* **dashboard:** always send 'dialog-dismissed' when clicking outside the dialog ([#385](https://github.com/nodecg/nodecg/issues/385)) ([da30fe1](https://github.com/nodecg/nodecg/commit/da30fe1))
+* **dashboard:** support the nodecg-dialog attribute within shadow roots ([#384](https://github.com/nodecg/nodecg/issues/384)) ([fc62adf](https://github.com/nodecg/nodecg/commit/fc62adf))
+* **logger:** improve formatting of errors reported to Sentry via the .error method ([cb6426e](https://github.com/nodecg/nodecg/commit/cb6426e))
+* **package:** fix Steam auth not working ([59627a9](https://github.com/nodecg/nodecg/commit/59627a9))
+* **package:** update make-fetch-happen to version 4.0.1 ([#389](https://github.com/nodecg/nodecg/issues/389)) ([7a44ca1](https://github.com/nodecg/nodecg/commit/7a44ca1)), closes [#382](https://github.com/nodecg/nodecg/issues/382)
+* **server:** prevent 'can't set headers after they are sent' error spam ([#387](https://github.com/nodecg/nodecg/issues/387)) ([58357bf](https://github.com/nodecg/nodecg/commit/58357bf))
+
+
+
 <a name="0.9.10"></a>
 ## [0.9.10](https://github.com/nodecg/nodecg/compare/v0.9.9...v0.9.10) (2018-03-08)
 

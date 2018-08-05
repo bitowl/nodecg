@@ -4,20 +4,11 @@
 const test = require('ava');
 
 // Ours
-require('../helpers/nodecg-and-webdriver')(test, ['dashboard']); // Must be first.
+require('../helpers/nodecg-and-webdriver')(test, {tabs: ['dashboard']}); // Must be first.
 const e = require('../helpers/test-environment');
 
-test.serial('should ensure that duplicate bundleName-messageName pairs are ignored', t => {
-	const error = t.throws(() => {
-		const cb = function () {};
-		e.apis.extension.listenFor('testMessageName', 'testBundleName', cb);
-		e.apis.extension.listenFor('testMessageName', 'testBundleName', cb);
-	}, Error);
-
-	t.is(
-		error.message,
-		'test-bundle attempted to declare a duplicate "listenFor" handler: testBundleName:testMessageName'
-	);
+test.beforeEach(async () => {
+	await e.browser.client.switchTab(e.browser.tabs.dashboard);
 });
 
 test.serial('should produce an error if a callback isn\'t given', t => {
@@ -57,4 +48,52 @@ test.serial('should receive messages', async t => {
 test.cb.serial('should send messages', t => {
 	e.apis.extension.listenFor('dashboardToServer', t.end);
 	e.browser.client.execute(() => window.dashboardApi.sendMessage('dashboardToServer'));
+});
+
+test.serial('should support multiple listenFor handlers', async t => {
+	// Set up the listenFor handlers.
+	await e.browser.client.execute(() => {
+		let callbacksInvoked = 0;
+		window.dashboardApi.listenFor('serverToDashboardMultiple', () => {
+			checkDone();
+		});
+
+		window.dashboardApi.listenFor('serverToDashboardMultiple', () => {
+			checkDone();
+		});
+
+		function checkDone() {
+			callbacksInvoked++;
+			window.__serverToDashboardMultipleDone__ = callbacksInvoked === 2;
+		}
+	});
+
+	// Send the message from the server to the clients.
+	e.apis.extension.sendMessage('serverToDashboardMultiple');
+
+	// Verify that our handlers both ran.
+	const res = await e.browser.client.execute(() => {
+		return window.__serverToDashboardMultipleDone__;
+	});
+	t.true(res.value);
+});
+
+test.serial('#bundleVersion', async t => {
+	const res = await e.browser.client.execute(() => {
+		return window.dashboardApi.bundleVersion;
+	});
+	t.is(res.value, '0.0.1');
+});
+
+test.serial('#bundleGit', async t => {
+	const res = await e.browser.client.execute(() => {
+		return window.dashboardApi.bundleGit;
+	});
+	t.deepEqual(res.value, {
+		branch: 'master',
+		date: '2018-07-13T17:09:29.000Z',
+		hash: '6262681c7f35eccd7293d57a50bdd25e4cd90684',
+		message: 'Initial commit',
+		shortHash: '6262681'
+	});
 });

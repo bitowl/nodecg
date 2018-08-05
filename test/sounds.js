@@ -6,7 +6,7 @@ const path = require('path');
 const test = require('ava');
 
 // Ours
-require('./helpers/nodecg-and-webdriver')(test, ['dashboard', 'graphic']); // Must be first.
+require('./helpers/nodecg-and-webdriver')(test, {tabs: ['dashboard', 'graphic']}); // Must be first.
 const e = require('./helpers/test-environment');
 const C = require('./helpers/test-constants');
 
@@ -108,7 +108,7 @@ test.serial('mixer - assignable cues - should list new sound Assets as they are 
 	 3. Check the list of options in the dropdown select for all assignable cues
 	 */
 	await e.browser.client.switchTab(e.browser.tabs.dashboard);
-	await e.browser.client.then(() => new Promise((resolve, reject) => {
+	await new Promise((resolve, reject) => {
 		const oggPath = path.join(C.ASSETS_ROOT, 'test-bundle/sounds/success.ogg');
 		fs.copy('test/fixtures/nodecg-core/assets/test-bundle/sounds/success.ogg', oggPath, {replace: true}, err => {
 			if (err) {
@@ -118,14 +118,13 @@ test.serial('mixer - assignable cues - should list new sound Assets as they are 
 
 			resolve();
 		});
-	}));
+	});
 
 	const ret = await e.browser.client.executeAsync(done => {
 		const el = document.querySelector('ncg-dashboard').shadowRoot
 			.querySelector('ncg-mixer').shadowRoot
 			.querySelector('ncg-sounds[bundle-name="test-bundle"]').shadowRoot
-			.querySelector('ncg-sound-cue:nth-child(1)').shadowRoot
-			.querySelector('#select');
+			.querySelector('ncg-sound-cue:nth-child(1)').$.select.$.select;
 
 		if (!el) {
 			return done('NoSuchElement');
