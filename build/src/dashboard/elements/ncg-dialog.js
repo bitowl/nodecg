@@ -73,7 +73,7 @@ class NcgDialog extends Polymer.mixinBehaviors([
 		window.iFrameResize({
 			log: false,
 			resizeFrom: 'child',
-			heightCalculationMethod: 'documentElementOffset',
+			heightCalculationMethod: 'lowestElement',
 			resizedCallback: data => {
 				data.iframe.dispatchEvent(new CustomEvent('iframe-resized'));
 			}
