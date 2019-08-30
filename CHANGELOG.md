@@ -1,6 +1,107 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [1.5.0](https://github.com/nodecg/nodecg/compare/v1.4.1...v1.5.0) (2019-08-06)
+
+
+### Features
+
+* **login:** expose refresh token from Twitch login authentication ([#504](https://github.com/nodecg/nodecg/issues/504)) ([b710314](https://github.com/nodecg/nodecg/commit/b710314))
+* add bundle paths customization ([#483](https://github.com/nodecg/nodecg/issues/483)) ([56ef32a](https://github.com/nodecg/nodecg/commit/56ef32a))
+* **replicants:** update persistence process ([#497](https://github.com/nodecg/nodecg/issues/497)) ([16fcefd](https://github.com/nodecg/nodecg/commit/16fcefd)), closes [#493](https://github.com/nodecg/nodecg/issues/493) [#488](https://github.com/nodecg/nodecg/issues/488)
+
+
+
+### [1.4.1](https://github.com/nodecg/nodecg/compare/v1.4.0...v1.4.1) (2019-07-16)
+
+
+### Bug Fixes
+
+* **instance-errors:** Update help text & design ([#494](https://github.com/nodecg/nodecg/issues/494)) ([7fcf6ee](https://github.com/nodecg/nodecg/commit/7fcf6ee))
+* **types:** Add sendMessageToBundle instance method to type definitions ([#480](https://github.com/nodecg/nodecg/issues/480)) ([a15fe3b](https://github.com/nodecg/nodecg/commit/a15fe3b))
+* **zeit_pkg:** fix pkg'd executables not working when compiled on a drive other than C: ([#498](https://github.com/nodecg/nodecg/issues/498)) ([3ae9b75](https://github.com/nodecg/nodecg/commit/3ae9b75))
+
+
+### Build System
+
+* **docker:** don't ignore types folder ([4c0e65c](https://github.com/nodecg/nodecg/commit/4c0e65c))
+
+
+
+# [1.4.0](https://github.com/nodecg/nodecg/compare/v1.3.2...v1.4.0) (2019-04-19)
+
+
+### Features
+
+* add multiple bundles paths support ([#470](https://github.com/nodecg/nodecg/issues/470)) ([3b76451](https://github.com/nodecg/nodecg/commit/3b76451))
+
+
+
+<a name="1.3.2"></a>
+## [1.3.2](https://github.com/nodecg/nodecg/compare/v1.3.1...v1.3.2) (2019-03-06)
+
+
+### Bug Fixes
+
+* **replicants:** ensure opts.defaultValue always get populated ([#467](https://github.com/nodecg/nodecg/issues/467)) ([73fd909](https://github.com/nodecg/nodecg/commit/73fd909))
+
+
+### Features
+
+* **typedef:** Export more types in browser.d.ts ([#465](https://github.com/nodecg/nodecg/issues/465)) ([0455036](https://github.com/nodecg/nodecg/commit/0455036))
+
+
+
+<a name="1.3.1"></a>
+## [1.3.1](https://github.com/nodecg/nodecg/compare/v1.3.0...v1.3.1) (2019-02-03)
+
+
+### Bug Fixes
+
+* **dashboard:** ensure the default workspace is first ([#458](https://github.com/nodecg/nodecg/issues/458)) ([18fdbe6](https://github.com/nodecg/nodecg/commit/18fdbe6))
+* **dashboard:** inject default styles before user styles ([#464](https://github.com/nodecg/nodecg/issues/464)) ([5981d9e](https://github.com/nodecg/nodecg/commit/5981d9e))
+* **injectscripts:** don't inject client_registration into busy.html or killed.html ([0a63202](https://github.com/nodecg/nodecg/commit/0a63202))
+* **package:** fix error when running in a zeit pkg ([38b01e2](https://github.com/nodecg/nodecg/commit/38b01e2))
+* **package:** include babel-plugin-bare-import-rewrite in zeit packages ([9813da3](https://github.com/nodecg/nodecg/commit/9813da3))
+* **replicant-schemas:** fix local refs not being resolved when appended to a file ref ([0cd1673](https://github.com/nodecg/nodecg/commit/0cd1673))
+* **router:** delay 404 resolution ([#463](https://github.com/nodecg/nodecg/issues/463)) ([23e5772](https://github.com/nodecg/nodecg/commit/23e5772))
+
+
+
+<a name="1.3.0"></a>
+# [1.3.0](https://github.com/nodecg/nodecg/compare/v1.2.2...v1.3.0) (2018-11-19)
+
+
+### Bug Fixes
+
+* **dashboard:** Sort all dashboard workspaces alphabetically ([#450](https://github.com/nodecg/nodecg/issues/450)) ([786f23f](https://github.com/nodecg/nodecg/commit/786f23f))
+
+
+### Features
+
+* **login:** add password hashing support for local auth ([#446](https://github.com/nodecg/nodecg/issues/446)) ([cf6192b](https://github.com/nodecg/nodecg/commit/cf6192b))
+* rewrite bare module specifiers ([#454](https://github.com/nodecg/nodecg/issues/454)) ([4500ccd](https://github.com/nodecg/nodecg/commit/4500ccd))
+
+
+
+<a name="1.2.2"></a>
+## [1.2.2](https://github.com/nodecg/nodecg/compare/v1.1.3...v1.2.2) (2018-10-30)
+
+
+### Bug Fixes
+
+* update Node.js version check ([#438](https://github.com/nodecg/nodecg/issues/438)) ([086621d](https://github.com/nodecg/nodecg/commit/086621d))
+* **types:** remove optional parameters in callback ([81b0a11](https://github.com/nodecg/nodecg/commit/81b0a11))
+
+
+### Features
+
+* **security:** add support for passphrase for SSL key ([#437](https://github.com/nodecg/nodecg/issues/437)) ([c444d9b](https://github.com/nodecg/nodecg/commit/c444d9b))
+* replace Pug by Lodash with cache ([83404d1](https://github.com/nodecg/nodecg/commit/83404d1))
+* **TypeScript:** Add NodeCG API TypeScript Type Definition ([#432](https://github.com/nodecg/nodecg/issues/432)) ([9372ca4](https://github.com/nodecg/nodecg/commit/9372ca4))
+
+
 
 <a name="1.1.3"></a>
 ## [1.1.3](https://github.com/nodecg/nodecg/compare/v1.1.2...v1.1.3) (2018-08-05)
