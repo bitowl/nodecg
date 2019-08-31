@@ -42,6 +42,14 @@ class NcgDashboard extends Polymer.PolymerElement {
 				height: 100%;
 			}
 
+			app-header-layout {
+				/* 
+				@bitowl: To counter fullbleed
+				Fixes problems when resizing the page with a lot of iframes on it
+				*/
+				position: relative !important;
+			}
+
 			app-header {
 				background-color: #2F3A4F;
 				--app-header-shadow: {
@@ -264,7 +272,7 @@ class NcgDashboard extends Polymer.PolymerElement {
 				</template>
 			</app-drawer>
 
-			<app-header-layout fullbleed="">
+			<app-header-layout fullbleed has-scrolling-region style="width:100%; height:100%">
 				<!-- main header -->
 				<app-header id="header" shadow="" slot="header">
 					<app-toolbar id="mainToolbar">
