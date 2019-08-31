@@ -48,13 +48,37 @@ class NcgSoundCue extends Polymer.PolymerElement {
 					width: 150px;
 				}
 			}
+
+			select {
+				-moz-appearance: none;
+				-webkit-appearance: none;
+				appearance: none;
+				background-color: #525F78;
+				background-image: url('/dashboard/img/select-arrow.png');
+				background-position: calc(93% + 2px) 8px;
+				background-repeat: no-repeat;
+				border: none;
+				border-bottom: 1px solid white;
+				box-sizing: border-box;
+				color: inherit;
+				font-family: inherit;
+				font-size: inherit;
+				font-weight: inherit;
+				height: 100%;
+				padding: 2px 6px;
+				width: 100%;
+			}
+
+			select:focus {
+				outline: 1px solid var(--nodecg-brand-blue);
+			}
 		</style>
 
 		<div id="leftWrapper">
 			<span id="name">[[name]]</span>
 		</div>
 
-		<ui-select id="select" on-change="_retargetFile"></ui-select>
+		<select id="select" on-change="_retargetFile"></select>
 		<paper-slider id="slider" min="0" max="100" step="1" on-change="_onSliderChange" editable=""></paper-slider>
 `;
 	}
